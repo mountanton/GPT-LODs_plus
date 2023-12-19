@@ -1,0 +1,366 @@
+body{
+    background-color: whitesmoke;
+    margin : 0;
+}
+
+#main_head{
+    color: white !important;
+    font-size: 18px;
+    font-family: Verdana,sans-serif;
+    position: fixed;
+    background: rgba(0, 0, 0, 0.975);
+    height: 3.25em;
+    left: 0;
+    line-height: 3.25em;
+    position: fixed;
+    top: 0;
+    width: 100%;
+    z-index: 100;
+}
+
+.ignore {
+    color: white;
+    padding-left: 20px;
+}
+
+.ignore:hover,focus{
+    border-bottom: none;
+}
+
+.ignore > span{
+    font-size: .8em !important;
+    color: rgba(255, 255, 255, 0.65) !important;
+}
+
+#footer{
+    margin-top: 100px;
+    bottom: 0px;
+    width: 100%;
+    height: 142px;
+    background-color:#5B5B5B;
+
+}
+
+.my_container{
+    margin-top: 2%;
+    position: relative;
+
+}
+
+#main_cont{
+    max-width: 1100px;
+    margin-left: auto;
+    margin-right: auto;
+    background-color: white;
+    border: 2px solid #1c191f;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.3);
+    height: 650px;
+    position: relative;
+    overflow: hidden;
+    z-index: 2;
+}
+
+.board_display{
+    max-width: 1100px;
+    background-color: white;
+    border: 2px solid #1c191f;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.3);
+
+    margin: 2% auto;
+    position: relative;
+}
+
+#entities_cont, #facts_cont, #validation_cont, #fail_msg{
+    display: none;
+}
+
+#l1{
+    margin-left: 45%;
+    position: absolute;
+}
+
+#loading{
+    width: 80px;
+    position: absolute;
+    top: 35%;
+    left: 0.5%;
+    overflow: visible;
+    display: none;
+}
+
+.options-text{
+    font-weight: bold;
+    font-family: Circular,-apple-system,BlinkMacSystemFont,Roboto,"Helvetica Neue";
+    font-size: 20px;
+}
+
+#opts1{
+    position: absolute;
+    bottom: 20px;
+    left: 10px;
+}
+
+#opts2{
+    position: absolute;
+    bottom: 5px;
+    left: 10px;
+}
+
+#opts3{
+    position: absolute;
+    bottom: 25px;
+    left: 2%;
+}
+
+#conv_choice{
+    position: relative;
+    left: 30%;
+    bottom: 55px;
+}
+
+textarea {
+    width: 95%;
+    height: 50px;
+    padding: 12px 20px;
+    box-sizing: border-box;
+    border: 2px solid #304775;
+    border-radius: 4px;
+    background-color: #f8f8f8;
+    font-size: 16px;
+    resize: none;
+    position: absolute;
+    bottom: 70px;
+    left: 30px;
+    z-index: 2;
+}
+
+textarea:focus{
+    border: 2px solid #2971ff;
+    outline: none;
+}
+
+.textbar::-webkit-scrollbar, #chat_cont::-webkit-scrollbar {
+    width: 10px;
+}
+.textbar::-webkit-scrollbar-track, #chat_cont::-webkit-scrollbar-track {
+    background: #f1f1f1;
+}
+.textbar::-webkit-scrollbar-thumb, #chat_cont::-webkit-scrollbar-thumb {
+    background: #888;
+}
+.textbar::-webkit-scrollbar-thumb:hover, #chat_cont::-webkit-scrollbar-thumb:hover {
+    background: #555;
+}
+
+h1{
+    margin:20px;
+    font-family: Arial,Helvetica,sans-serif;
+    color: #123;
+    padding: 0px;
+    font-size: 28px;
+    font-weight: bold;
+}
+
+h2{
+    font-size: 24px;
+}
+
+#click_info{
+    font-family: "Segoe UI",Arial,sans-serif;
+    font-size: 18px;
+    color: #5435cb;
+    display: none;
+}
+
+h4{
+    font-family: Arial,Helvetica,sans-serif;
+    color: #123;
+    display: inline-block;
+    font-size: 17px;
+}
+
+h3{
+    font-family: "Segoe UI",Arial,sans-serif;
+    font-weight: 400;
+    color: #122941;
+    font-size: 26px;
+}
+
+#temp{
+    font-size: 50px;
+}
+
+#chat_cont{
+    width: 100%;
+    height: 65%;
+    position: absolute;
+    overflow-y: auto;
+    overflow-x: clip;
+}
+.usrQuestion{
+    width: 100%;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    box-sizing: border-box;
+    border-radius: 4px;
+    background-color: #ffffff;
+    font-size: 15px;
+}
+
+.GPTresponse, .text_question{
+    width: 100%;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    box-sizing: border-box;
+    background-color: #f5f5f5;
+    font-size: 15px;
+    cursor: pointer;
+}
+.text_question:hover{
+    border: 1px solid #5435cb;
+}
+
+.GPTresponse:hover{
+    background-color: #c5c5c5;
+}
+
+.QnAtext {
+    display: flex;
+    padding-left: 35px;
+    flex-direction: row;
+    align-items: baseline;
+    font-size: 20px;
+}
+
+#wait_msg{
+    font-size: 18px;
+    color: #c98810;
+    position: absolute;
+    bottom: 10px;
+    right: 200px;
+    visibility: hidden;
+}
+
+.btn_container > * {
+    margin-left: 20px;
+    margin-right: 20px;
+    min-width: 200px;
+}
+
+#ent_table{
+
+}
+
+#loader_txt{
+    font-size: 1.5vw;
+    width: 300px;
+}
+
+a{
+    color: #5435cb;
+    outline: none;
+    text-decoration: none;
+}
+
+a:focus,
+a:hover {
+    border-bottom: 1px solid;
+}
+
+.txt_style{
+    font-weight: 600;
+    font-family: "Segoe UI",Arial,sans-serif;
+    color: #262949;
+}
+
+#service_selection > *{
+    margin-left: 20px;
+    margin-right: 20px;
+    min-width: 235px;
+}
+#service_selection{
+    position: relative;
+}
+
+#my_box{
+    position: relative;
+    top: 75%;
+}
+
+#help_msg{
+    font-weight: 600;
+    font-family: Circular,-apple-system,BlinkMacSystemFont,Roboto,"Helvetica Neue";
+    font-size: 20px;
+
+    position: absolute;
+    left: 30px;
+}
+
+.wrapper {
+    padding: 6rem 0 3rem 0;
+    position: relative;
+    background-color: #182637;
+    margin-bottom: 100px;
+}
+
+.wrapper p{
+    letter-spacing: .25rem;
+    font-family: Verdana,sans-serif;
+}
+
+.thin-line {
+    border-top: 1px solid rgba(255, 255, 255, 0.5); /* 1px solid black */
+    margin: auto;
+    width: 34%;
+    height: 1px;
+}
+
+.align-center {
+    text-align: center;
+}
+
+.copyright{
+    height:30px;
+    font-size:14px;
+    background-color: black;
+    color:white;
+    text-align:center;
+    padding-top:10px;
+}
+
+.link_underlined{
+    color:white;
+    border-bottom: 1px solid;
+}
+
+.link_underlined:hover,focus{
+    border-bottom: none;
+}
+
+.align_right{
+    float:right;
+    margin-right:20px;
+}
+
+.desc_container {
+    width: 45%;
+    height: 65%;
+    box-sizing: border-box;
+    float: left;
+    padding: 10px 20px;
+    background-color: #ececec;
+    margin: 3.5% 2.5%;
+}
+
+/* Clear the float to prevent layout issues */
+.clearfix::after {
+    content: "";
+    display: table;
+    clear: both;
+}
+
+.image.right {
+    float: right;
+    padding: 0 0 1em 1.5em;
+    top: 0.25em;
+}

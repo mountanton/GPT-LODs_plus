@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="author" content="Koumakis Emmanouil">
+    <meta name="description" content="Batchelor Thesis Project">
+    <title>GPT•LODS+</title>
+    <link rel="Page Icon" href="assets/gptlods_logo3.png" type="image/png">
+
+
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="js/GPT_ajax.js"></script>
+    <script src="js/LODsyndesis.js"></script>
+    <script src="js/slidingWindow.js"></script>
+    <script src="js/factChecking.js"></script>
+    <script src="js/plain_text.js"></script>
+
+    <link rel="stylesheet" href="css/radio.css">
+    <link rel="stylesheet" href="css/buttons.css">
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/input_range.css">
+    <link rel="stylesheet" href="css/animated_utils.css">
+    <link rel="stylesheet" href="css/tables.css">
+
+</head>
+<body>
+<header id="main_head">
+    <a class="ignore" href="index.html">GPT•LODS+<span> SAR group ISL-FORTH</span></a>
+</header>
+
+<section class="wrapper">
+    <div class="inner">
+        <header class="align-center">
+            <p style="font-size:1.3rem; color: #999999;">LODsyndesis Services over ChatGPT <img src="assets/gptlods_logo2.png" width="120"></p>
+            <div class="thin-line"></div>
+            <h3 style="color: #e8e8e8; margin-top: 5px">GPT•LODS+ : Using RDF Knowledge Graphs for Annotating, Enriching and Validating ChatGPT Responses</h3>
+        </header>
+    </div>
+</section>
+
+<div id="main" class="my_container">
+    <section id="main_cont">
+        <div align="center" class="desc_container">
+            <h2 style="font-size: 22px" class="txt_style">Annotation and Enrichment Service</h2>
+            <br>
+            <p style="font-size: 16px; font-family: Poppins, sans-serif;" align="justify"><span class="image right"><img src="assets/gptlods_logo_an.png" width="180"></span>
+                The Annotation and Enrichment Service is an information extraction service that exploits widely used Entity Recognition tools (WAT, Stanford CoreNLP and DBpedia Spotlight)
+                for recognizing the entities of a given ChatGPT, and enriches the recognized entities by using 400 RDF datasets through <a href="https://demos.isl.ics.forth.gr/lodsyndesis/">LODsyndesis</a>.
+                <br><br>The user can browse and export the provenance of each entity, all its equivalent URIs, all its triples and to find the K most
+                relevant datasets for that entity, by connecting to LODsyndesis Knowledge Graph.</p>
+        </div>
+
+        <div align="center" class="desc_container">
+            <h2 style="font-size: 22px" class="txt_style">Fact Checking and Triple Generation Service</h2>
+            <br>
+            <p style="font-size: 16px; font-family: Poppins, sans-serif;" align="justify"><span class="image right"><img src="assets/gptlods_logo_fc.png" width="180"></span>
+                Fact Checking and Triple Generation Service is a service where a user sends a query to ChatGPT and this service asks ChatGPT to provide the answer in RDF N-triples format, by using DBpedia ontology. <br><br>
+                After receiving the response of ChatGPT (in RDF format), the user can export the triples and/or validate
+                the facts by using one or more RDF datasets (such as DBpedia), SPARQL queries, word embeddings and sentence similarity methods.
+            </p>
+
+        </div>
+        <div class="clearfix"></div>
+
+        <div align="center" id="service_selection">
+            <h4 style="font-size: 20px">The service is available for ChatGPT responses as well as for plain text :</h4>
+            <br>
+            <button onclick="load_content('GPT')">Try using GPT responses</button>
+            <button onclick="load_content('TEXT')">Try using plain Text</button>
+        </div>
+    </section>
+</div>
+
+<div id="loading">
+    <h1 id="loader_txt" align="center">Recognizing entities <br> please stand by</h1>
+    <span  class="loader" id="l1"></span>
+</div>
+
+<div class="my_container">
+    <section id="entities_cont" class="board_display">
+        <table id="ent_table">
+            <tbody>
+            <tr style="font-weight: bold;">
+                <td align="center">Entity</td>
+                <td align="center">Find Provenance</td>
+                <td align="center">Download URIs</td>
+                <td align="center">Download All Triples</td>
+                <td align="center">Find the Top-K(10) Datasets</td>
+            </tr>
+            </tbody>
+        </table>
+    </section>
+
+    <h1 id="fail_msg" align="center"> Chat-GPT failed to generate triples for the given text</h1>
+
+    <section id="facts_cont" class="board_display">
+
+        <table id="facts_table">
+            <tbody>
+            <tr style="font-weight: bold;">
+                <td align="center">Fact ID</td>
+                <td align="center">Subject</td>
+                <td align="center">Predicate</td>
+                <td align="center">Object</td>
+                <td align="center">Validation Button</td>
+            </tr>
+            </tbody>
+        </table>
+
+        <div id="facts_opts">
+            <br>
+            <br>
+            <div id="kg_opts" align="center">
+                <span class="options-text">Select a Knowledge Graph (KG) for validation:</span>
+                <label for="kg1" class="m-radio">
+                    <input type="radio" name="kg-model" id="kg1" value="DBpedia" checked>
+                    <span>DBpedia</span>
+                </label>
+
+                <label for="kg2" class="m-radio">
+                    <input type="radio" name="kg-model" id="kg2" value="LODsyndesis">
+                    <span>LODsyndesis</span>
+                </label>
+            </div>
+            <div align="center"><button id="valid_all" onclick="validate_Facts()">Validate All</button></div>
+            <br>
+            <br>
+        </div>
+
+    </section>
+
+    <section id="validation_cont" class="board_display"></section>
+</div>
+
+<footer id="footer" >
+    <div class="copyright" >
+        <a class="link_underlined" href="http://www.ics.forth.gr/isl/sar/privacy/TermsOfUse-ISL_EN.pdf" class="footer-links" target="_blank">Terms of Use</a>
+        |
+        <a class="link_underlined" href="http://www.ics.forth.gr/isl/sar/privacy/PrivacyPolicy-ISL_EN.pdf" style="padding-left:0px!important;" class="footer-links" target="_blank">Privacy Policy</a>
+        | © Copyright 2023 FOUNDATION FOR RESEARCH &amp; TECHNOLOGY - HELLAS, All rights reserved.
+    </div>
+
+    <div style="padding-top:1rem">
+        <img class="align_right" src="assets/islLogo_En_Main_web_700x237px.png" height="35">
+        <img class="align_right" src="assets/ics-diskin-en-transparent-white.png" height="35">
+    </div>
+    <p class="align_right" style="color:#D1D1D1; font-family:Myriad Pro; clear: right;"> Designed and developed by <a class="link_underlined" href="https://www.ics.forth.gr/isl" target="_blank">ISL Team</a></p>
+</footer>
+</body>

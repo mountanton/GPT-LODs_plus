@@ -1,0 +1,67 @@
+button {
+    background-color: #FFFFFF;
+    border: 1px solid #222222;
+    border-radius: 8px;
+    box-sizing: border-box;
+    color: #222222;
+    cursor: pointer;
+    display: inline-block;
+    font-family: Circular,-apple-system,BlinkMacSystemFont,Roboto,"Helvetica Neue",sans-serif;
+    font-size: 16px;
+    font-weight: 600;
+    line-height: 20px;
+    margin: 0;
+    outline: none;
+    padding: 8px 23px;
+    text-align: center;
+    text-decoration: none;
+    touch-action: manipulation;
+    user-select: none;
+    -webkit-user-select: none;
+}
+
+button:focus-visible {
+    box-shadow: #222222 0 0 0 2px, rgba(255, 255, 255, 0.8) 0 0 0 4px;
+    transition: box-shadow .2s;
+}
+
+button:active {
+    background-color: #F7F7F7;
+    border-color: #000000;
+    transform: scale(.96);
+}
+
+button:disabled {
+    border-color: #DDDDDD;
+    color: #DDDDDD;
+    cursor: not-allowed;
+    opacity: 1;
+}
+
+button:hover{
+    border-color: #2971ff;
+}
+
+#getResponse, #startChat{
+    position: absolute;
+    bottom: 15px;
+    right: 10px;
+}
+
+#continue{
+    position: absolute;
+    bottom: -70px;
+    right: 10px;
+}
+
+#download_triples{
+    position: absolute;
+    right: 50px;
+    bottom: 125px;
+}
+
+@media screen and (max-width: 1050px){
+    #download_triples{
+        right: 40px;
+    }
+}

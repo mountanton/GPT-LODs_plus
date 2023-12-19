@@ -1,0 +1,54 @@
+<section id="main_cont">
+    <h1 align="center"> Ask ChatGPT </h1>
+    <h3 id="click_info" align="center" style="font-weight: bold">Click on a specific response to get Annotation and Enrichment Services </h3>
+
+    <section id="chat_cont"></section>
+    <div id="opts_cont">
+
+        <div id="opts3">
+            <span class="options-text">Conversation type :</span>
+            <div id="conv_choice">
+                <label for="conv1" class="m-radio">
+                    <input type="radio" name="conv_type" id="conv1" value="independent" checked>
+                    <span>Independent Discussion (No question history kept - Faster response time)</span>
+                </label>
+                <br>
+                <label for="conv2" class="m-radio">
+                    <input type="radio" name="conv_type" id="conv2" value="continuous">
+                    <span>Continuous Discussion (Chat-GPT will remember previous questions asked)</span>
+                </label>
+            </div>
+        </div>
+        <button id="startChat" onclick="startChat()">Start Chatting</button>
+    </div>
+</section>
+<div class="window" id="sliding-window">
+    <div class="window-content">
+        <h1 align="center">Annotation-Enrichment & Fact Checking Services</h1>
+        <br>
+        <div class="checkbox-wrapper-40" align="center">
+            <form id="ERform">
+                <span class="options-text">Select Tool(s) for Entity Recognition:</span>
+                <label>
+                    <input type="checkbox" name="ERtools" value="WAT" checked />
+                    <span class="checkbox-lbl">WAT</span>
+                </label>
+
+                <label>
+                    <input type="checkbox" name="ERtools" value="DBS" checked />
+                    <span class="checkbox-lbl">DBpedia Spotlight</span>
+                </label>
+
+                <label>
+                    <input type="checkbox" name="ERtools" value="SCNLP" />
+                    <span class="checkbox-lbl">Stanford CoreNLP</span>
+                </label>
+            </form>
+        </div>
+        <p class="btn_container" align="center">
+            <button id="mark_btn">Mark entities</button>
+            <button id="ent_info_btn">Entities Information</button>
+            <button id="get_facts_btn">Get Facts</button>
+        </p>
+    </div>
+</div>
