@@ -20,7 +20,7 @@ public class GPTanswerFacts extends HttpServlet {
         String model = request.getParameter("gpt-model");
 
         if(model == null)               //manually set model when using plain-text since user doesn't choose in the beginning
-            model = "davinci";          //set it to davinci for speed purposed on developing. Will change later anyway
+            model = "turbo";          //set it to davinci for speed purposed on developing. Will change later anyway
 
         try {
             String resp = chatgpt.getChatGPTResponse(input, model, 0.1); //0.1 for full accuracy

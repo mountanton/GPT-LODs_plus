@@ -19,19 +19,21 @@ import com.google.gson.JsonObject;
  * @author mountant
  */
 public class ChatGPT {
-
-    public String key = "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";
+    /**/
+    public String key = "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";
 
     /**Calls gpt without caring  about conversation history*/
     public String getChatGPTResponse(String text, String model, double temperature) throws Exception{
-        if(model.equals("davinci")){
+       /**Davinci model is no longer supported... We keep this function for future usage (maybe when another model is released
+          that can be used through the api, we will add it to the web service to choose between) */
+        /* if(model.equals("davinci")){
             return chatGPT(text, temperature);
         }
-        else if(model.equals("turbo")){
+        else if(model.equals("turbo")){*/
             return chatGPT_TURBO(text, temperature);
-        }
+       /* }
 
-        return "";
+        return "";*/
     }
 
     /**Calls gpt turbo version without caring  about conversation history*/
@@ -50,6 +52,7 @@ public class ChatGPT {
         data.put("temperature", temperature);
         data.put("max_tokens", 2000);
 
+        text = text.replace("\"", "\'");  //replace double quotes of string with single quotes, to create a valid json format
         String body=data.toString().replace("\"[", "[").replace("]\"", "]").replace("'","\"").replace("MyText", text);
         System.out.println(body);
         con.setDoOutput(true);
@@ -135,11 +138,12 @@ public class ChatGPT {
         //Prepare current question
         JsonObject curr_question = new JsonObject();
         curr_question.addProperty("role","user");
+        System.out.println(text);
+        text = text.replace("\"", "\'");  //replace double quotes of string with single quotes, to create a valid json format
         curr_question.addProperty("content",text);
 
         //append to prevous QnA
         jArr.add(curr_question);
-        System.out.println(jArr.toString());
 
         //call
         JsonObject  data = new JsonObject();
@@ -159,7 +163,7 @@ public class ChatGPT {
         //Append response
         JsonObject response_data = new JsonObject();
         response_data.addProperty("role", "assistant");
-        response_data.addProperty("content", new JSONObject(output).getJSONArray("choices").getJSONObject(0).getJSONObject("message").getString("content"));
+        response_data.addProperty("content", new JSONObject(output).getJSONArray("choices").getJSONObject(0).getJSONObject("message").getString("content").replace("\"",""));
         jArr.add(response_data);
         System.out.println("UPDATED SESSION ARR :" + jArr.toString());
         System.out.println("response details :" + output);
