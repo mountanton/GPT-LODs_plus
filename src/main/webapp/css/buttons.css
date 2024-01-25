@@ -59,6 +59,11 @@ button:hover{
     right: 50px;
     bottom: 125px;
 }
+#lodchain_btn{
+    position: absolute;
+    right: 235px;
+    bottom: 125px;
+}
 
 @media screen and (max-width: 1050px){
     #download_triples{

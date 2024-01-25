@@ -157,6 +157,10 @@ function create_fact_table(respID){
             let download_triples = $('<button id="download_triples" onclick="download_triples(' + respID + ')">Download Triples </button>');
             $('#download_triples').remove();
             $('#facts_opts').prepend(download_triples);
+
+            let lodchain_btn = $('<button id="lodchain_btn" onclick="connect_lodChain(' + respID + ')">Connect to LODchain</button>');
+            $('#lodchain_btn').remove();
+            $('#facts_opts').prepend(lodchain_btn);
         }
         already_displayed_facts[last_displayed_fact] = false;   //na markarei me closed to teleutaio pou eixe anoiksei
         already_displayed_facts[respID] = true;                 //markarei me open auto pou anoikse twra
@@ -301,4 +305,10 @@ function validate_Facts(index = -1){
     xhr.open("POST", adaptive_url + 'factChecking/' + kg);
     xhr.setRequestHeader("Accept", "application/json");
     xhr.send(body);
+}
+
+//TO DO
+function connect_lodChain(respID){
+    const triples = fact_map[respID];   // se periptosi pou xreiazontai oi tripletes
+    console.log('connect to lodchain hit for Q' + (respID + 1))
 }
