@@ -25,6 +25,11 @@ function get_facts(text, respID){
     }
 }
 
+function get_er_facts(text, respID){
+    console.log('clicked er for resp ' + (respID +1));
+
+}
+
 /**Get GPT rdf-response by calling the python API*/
 function call_Fact_Python(text){
 

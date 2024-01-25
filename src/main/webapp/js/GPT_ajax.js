@@ -13,6 +13,7 @@ function getGPTanswer(){
     msg.css('visibility', 'visible');
     closeWindow();
     hide_tables();
+    $('#get_fatcs_er_btn').prop('disabled',true);  //disable get facts (ER) button, it gets enabled when entity recognition happens
 
     let xhr = new XMLHttpRequest();
     xhr.onload = function (){
@@ -43,16 +44,24 @@ function getGPTanswer(){
                 let mark_bnt  = $('#mark_btn');
                 let info_bnt  = $('#ent_info_btn');
                 let facts_btn = $('#get_facts_btn');
+                let er_facts  = $('#get_fatcs_er_btn');
                 $('#q_id').html('Selected: R' +(static_cnt + 1))
 
                 //remove previously applied functions
                 mark_bnt.off('click');
                 info_bnt.off('click');
                 facts_btn.off('click');
+                er_facts.off('click');
 
                 mark_bnt.click(function(){mark_entities(xhr.responseText, static_cnt)});
                 info_bnt.click(function (){get_ent_info(xhr.responseText, static_cnt)});
                 facts_btn.click(function (){get_facts(xhr.responseText, static_cnt)});
+                er_facts.click(function (){get_er_facts(xhr.responseText, static_cnt)});
+
+                if(jsonMap[static_cnt] !== undefined)   //an exei ginei proigoumenws annotation, theloume na kanoume enable to button
+                    er_facts.prop('disabled',false);
+                else
+                    er_facts.prop('disabled',true);
             });
 
             $('#chat_cont').append(Qcontainer);

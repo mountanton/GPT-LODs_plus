@@ -73,13 +73,21 @@ function enable_operations(txt, static_cnt){
     let mark_bnt  = $('#mark_btn');
     let info_bnt  = $('#ent_info_btn');
     let facts_btn = $('#get_facts_btn');
+    let er_facts  = $('#get_fatcs_er_btn');
 
     //remove previously applied functions
     mark_bnt.off('click');
     info_bnt.off('click');
     facts_btn.off('click');
+    er_facts.off('click');
 
     mark_bnt.click(function(){mark_entities(txt, static_cnt)});
     info_bnt.click(function (){get_ent_info(txt, static_cnt)});
     facts_btn.click(function (){get_facts(txt, static_cnt)});
+    er_facts.click(function (){get_er_facts(txt, static_cnt)});
+
+    if(jsonMap[static_cnt] !== undefined)   //an exei ginei proigoumenws annotation, theloume na kanoume enable to button
+        $('#get_fatcs_er_btn').prop('disabled',false);
+    else
+        $('#get_fatcs_er_btn').prop('disabled',true);
 }

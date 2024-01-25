@@ -188,7 +188,7 @@ h4{
 }
 
 #q_id_text{
-    top: -8px;
+    top: -19px;
 }
 
 
@@ -387,4 +387,18 @@ a:hover {
     float: right;
     padding: 0 0 1em 1.5em;
     top: 0.25em;
+}
+
+@media screen and (max-width: 987px){
+    .btn_container > *{
+        min-width: initial;
+    }
+}
+@media screen and (max-width: 1060px){
+    #q_id_text{
+        top: -9px;
+    }
+    .btn_container > *{
+        min-width: initial;
+    }
 }
