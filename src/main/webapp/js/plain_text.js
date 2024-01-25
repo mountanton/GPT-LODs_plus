@@ -3,6 +3,10 @@
 var question_cnt = 0;
 
 function load_content(opts){
+    $('#api_hint').remove();
+    $('#footer').css('margin-top', '100px');
+    $('.my_container').css('margin-top', '2%');
+
     if(opts == 'GPT')
         $('#main').load('GPT.html');
     else
@@ -64,7 +68,7 @@ function animate_container(Qcontainer){
 function enable_operations(txt, static_cnt){
     console.log(txt + '  ' +static_cnt);
 
-
+    $('#q_id_text').html('Selected: T' + (static_cnt +1));
     let mark_bnt  = $('#mark_btn');
     let info_bnt  = $('#ent_info_btn');
     let facts_btn = $('#get_facts_btn');

@@ -19,7 +19,7 @@ function getGPTanswer(){
             //Create the question to be displayed
             let Qcontainer = $('<div>').addClass('usrQuestion');
             let Qtext = $('<div>').addClass('QnAtext').text(question);
-            let Qheader = $('<h4>').text('Q: \u00a0');
+            let Qheader = $('<h4>').text('Q'+ (response_cnt + 1) +': \u00a0');
             Qtext.prepend(Qheader);
             Qcontainer.append(Qtext);
 
@@ -28,7 +28,7 @@ function getGPTanswer(){
             let Rtext = $('<div>').addClass('QnAtext');
             let Rpar  = $('<p>').text(xhr.responseText).css('padding-left', '10px');
             Rpar.attr("id", "resp" + response_cnt);
-            let Rheader = $('<h4>').text('R: \u00a0');
+            let Rheader = $('<h4>').text('R'+ (response_cnt + 1) +': \u00a0');
             Rtext.prepend(Rheader);
             Rtext.append(Rpar);
             Rcontainer.append(Rtext);
@@ -41,6 +41,7 @@ function getGPTanswer(){
                 let mark_bnt  = $('#mark_btn');
                 let info_bnt  = $('#ent_info_btn');
                 let facts_btn = $('#get_facts_btn');
+                $('#q_id').html('Selected: R' +(static_cnt + 1))
 
                 //remove previously applied functions
                 mark_bnt.off('click');
