@@ -12,6 +12,7 @@ function getGPTanswer(){
     $('#Qtext').prop('disabled', true); //since we can also send questions by hitting enter, we have to disable text area as well
     msg.css('visibility', 'visible');
     closeWindow();
+    hide_tables();
 
     let xhr = new XMLHttpRequest();
     xhr.onload = function (){
@@ -96,4 +97,19 @@ function startChat(){
 
     xhr.open('POST', 'InitiateSession?conv_type=' + conv_type);
     xhr.send();
+}
+
+//used to hide open tables when a new query is sent
+function hide_tables(){
+    if(already_displayed[last_displayed]){
+        $('#entities_cont').css('display', 'none');
+        already_displayed[last_displayed] = false;
+    }
+    else if(already_displayed_facts[last_displayed_fact]){
+        $('#facts_cont').css('display', 'none');
+        $('#validation_cont').css('display', 'none');
+        already_displayed_facts[last_displayed_fact] = false;
+    }
+
+    $('#fail_msg').css('display', 'none');
 }

@@ -111,6 +111,7 @@ function get_ent_info(text, respID){
                 console.error(error);
             });
     }
+    $('#fail_msg').css('display', 'none');
 
 }
 

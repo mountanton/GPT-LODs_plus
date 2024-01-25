@@ -20,6 +20,7 @@ function enable_services(){
         return;
     }
 
+    hide_tables();
     display_question(question);
 
     $('#Qtext1').val('');
