@@ -9,6 +9,7 @@ function getGPTanswer(){
     let msg =  $('#wait_msg');
 
     req_button.prop('disabled', true); //disable questions while waiting for GPT response
+    $('#Qtext').prop('disabled', true); //since we can also send questions by hitting enter, we have to disable text area as well
     msg.css('visibility', 'visible');
     closeWindow();
 
@@ -57,6 +58,7 @@ function getGPTanswer(){
             $('#chat_cont').append(Rcontainer);
 
             req_button.prop('disabled', false);
+            $('#Qtext').prop('disabled', false);
             msg.css('visibility', 'hidden');
             $('#click_info').css('display', 'block');
             response_cnt++;
@@ -64,6 +66,7 @@ function getGPTanswer(){
         else if (xhr.status !== 200) {
             alert("Something went wrong server responded with: \n" + xhr.responseText);
             req_button.prop('disabled', false);
+            $('#Qtext').prop('disabled', false);
             msg.css('visibility', 'hidden');
         }
     };

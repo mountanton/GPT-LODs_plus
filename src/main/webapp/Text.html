@@ -3,10 +3,21 @@
 
     <section id="chat_cont"></section>
 
-    <textarea align="left"  class="textbar" id="Qtext" name="usrInput" style="bottom: 100px"></textarea>
+    <textarea align="left"  class="textbar" id="Qtext1" name="usrInput" style="bottom: 100px"></textarea>
 
     <div id="my_box">
         <span id="help_msg">First enter the text you want to annotate and then click continue to enable the services for that specific text.</span>
         <button id="continue" onclick="enable_services()">Continue</button>
     </div>
 </section>
+
+<!-- add event listener (on 'enter' hit) -->
+<script>
+    document.getElementById('Qtext1').addEventListener('keydown', function (event) {
+        if (event.key === 'Enter') {
+            event.preventDefault();
+            enable_services();
+        }
+    });
+
+</script>

@@ -14,7 +14,7 @@ function load_content(opts){
 }
 
 function enable_services(){
-    let question = $('#Qtext').val();
+    let question = $('#Qtext1').val();
     if(question.trim() ==''){
         alert('Please Enter some text first!');
         return;
@@ -22,7 +22,7 @@ function enable_services(){
 
     display_question(question);
 
-    $('#Qtext').val('');
+    $('#Qtext1').val('');
     const static_cnt = question_cnt;
     $('#my_box').load('text_operations.html', function() {
         enable_operations(question, static_cnt); //for the current question (when continue is clicked)
