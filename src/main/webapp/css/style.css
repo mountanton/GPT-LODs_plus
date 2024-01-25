@@ -297,7 +297,11 @@ a:hover {
 
 #my_box{
     position: relative;
-    top: 75%;
+    top: 78%;
+}
+
+#Qtext{
+    height: 100px;
 }
 
 #help_msg{
