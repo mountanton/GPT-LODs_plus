@@ -220,7 +220,7 @@ function getLODentities(text) {
             if (xhr.readyState === 4 && xhr.status === 200) {
                 const jsonResponse = JSON.parse(xhr.responseText);
                 resolve(jsonResponse);
-                $('#get_fatcs_er_btn').prop('disabled',false);
+                $('#get_fatcs_er_btn').prop('disabled',false);  //annotation complete, enable enhanced getFacts
             } else if (xhr.status !== 200) {
                 const error = "Something went wrong LODsyndesis responded with: \n" + xhr.responseText;
                 reject(error);

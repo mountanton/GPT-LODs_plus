@@ -119,6 +119,11 @@ function hide_tables(){
         $('#validation_cont').css('display', 'none');
         already_displayed_facts[last_displayed_fact] = false;
     }
+    else if(already_displayed_ER[last_displayed_ER]){
+        $('#facts_cont').css('display', 'none');
+        $('#validation_cont').css('display', 'none');
+        already_displayed_ER[last_displayed_ER] = false;
+    }
 
     $('#fail_msg').css('display', 'none');
 }

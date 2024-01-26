@@ -4,6 +4,11 @@ const adaptive_url = 'http://93.115.20.167:5000/';
 var fact_map = {};
 const already_displayed_facts = new Array(100).fill(false);
 var last_displayed_fact = 0;
+
+var fact_map_ER = {};
+const already_displayed_ER = new Array(100).fill(false);
+var last_displayed_ER = 0;
+
 var triples;
 var triples_unsplit;
 var jsonFile;
@@ -26,7 +31,21 @@ function get_facts(text, respID){
 }
 
 function get_er_facts(text, respID){
-    console.log('clicked er for resp ' + (respID +1));
+    if (fact_map_ER[respID] !== undefined)    //if already called the API for this specific response
+        create_fact_table_ER(respID);
+    else {
+        let enhanced_txt = enchance_with_dblinks(text, respID);
+        //make the request to chat-GPT
+        call_Fact_Java(enhanced_txt, respID)
+            .then(rdf => {
+                fact_map_ER[respID] = rdf.trim();
+                console.log(fact_map_ER[respID]);
+                create_fact_table_ER(respID);
+            })
+            .catch(error => {
+                console.error(error);
+            });
+    }
 
 }
 
@@ -74,23 +93,26 @@ function call_Fact_Java(text, respID){
     return new Promise((resolve, reject) => {
         const facts_btn = $('#get_facts_btn');
         facts_btn.prop('disabled', true);
+        const er_facts_btn = $('#get_fatcs_er_btn');
+        er_facts_btn.prop('disabled', true);
 
         let xhr = new XMLHttpRequest();
         xhr.onload = function (){
             if(xhr.readyState === 4 && xhr.status === 200){
-                facts_btn.prop('disabled', false);
                 resolve(xhr.responseText);
             }
             else if (xhr.status !== 200) {
                 const error = "Something went wrong server responded with: \n" + xhr.responseText;
-                facts_btn.prop('disabled', false);
                 reject(error);
             }
+            //re-enable buttons
+            facts_btn.prop('disabled', false);
+            if(jsonMap[respID] !== undefined)   //mono an exei proigithei annotation to kanoume re-enable
+                er_facts_btn.prop('disabled',false);
         };
 
         let data = $('#InitialForm').serialize();
-        let enchanced_text =  enchance_with_dblinks(text, respID);
-        let input = 'Give me just the RDF N-triples using DBpedia format for the text : ' + enchanced_text ;
+        let input = 'Give me just the RDF N-triples using DBpedia format for the text : ' + text ;
         let url = 'GPTanswerFacts?' + data + '&question=' + input;
 
         xhr.open('GET',url);
@@ -100,7 +122,7 @@ function call_Fact_Java(text, respID){
 }
 
 /**provides the dbpedia link for each recognized entity
- * (Used when calling chat GPT for fact checking, asking it to give us the RDF N-triples for a text*/
+ * (Used when calling chat GPT for fact checking with ER, asking it to give us the RDF N-triples for a text*/
 function enchance_with_dblinks(text, respID){
     if(jsonMap[respID] !== undefined) {  //prepei na exei proigithei annotation
         jsonMap[respID].forEach(item => {
@@ -114,63 +136,53 @@ function enchance_with_dblinks(text, respID){
     return text;
 }
 
+//for enhanced get facts button
+function create_fact_table_ER(respID){
+    if (!already_displayed_ER[respID]) {
+
+        triples_unsplit = fact_map_ER[respID];
+        triples = fact_map_ER[respID].split("\n")
+            .filter(line => line.trim() !== ""    //get rid of intermediate blank lines
+                && line.trim().startsWith("<"))  // and lines that dont contain triples
+
+        //all table creation related work happens here
+        generate_table(respID, true);
+
+        already_displayed_ER[last_displayed_ER] = false;   //na markarei me closed to teleutaio pou eixe anoiksei
+        already_displayed_ER[respID] = true;                 //markarei me open auto pou anoikse twra
+        last_displayed_ER = respID;                           //to krataei ws teleutaio
+        $('#facts_cont').css('display', 'block');
+
+        already_displayed_facts[last_displayed_fact] = false; //markare to teleutaio regular get_facts (se periptwsi pou itan anoixto kapoio)
+
+        //kleise to entities table (an upirxe kapoio anoixto)
+        $('#entities_cont').css('display', 'none');
+        already_displayed[last_displayed] = false;
+    }
+    else {
+        $('#facts_cont').css('display', 'none');
+        $('#validation_cont').css('display', 'none');
+        already_displayed_ER[respID] = false;
+    }
+}
+
 function create_fact_table(respID){
     if (!already_displayed_facts[respID]) {
-        $('#facts_table tr:not(:first-child)').remove(); //delete any previous rows
-        let table  = $('#facts_table');
 
-        let flag = 0;
-        let factNo = 1;
         triples_unsplit = fact_map[respID];
         triples = fact_map[respID].split("\n")
                                   .filter(line => line.trim() !== ""    //get rid of intermediate blank lines
                                       && line.trim().startsWith("<"))  // and lines that dont contain triples
 
-        triples.forEach(tr => {
-            let triple = tr.split("> ");       //get single triple
+        //all table creation related work happens here
+        generate_table(respID, false);
 
-            if(triple.length >= 3){
-                let sub = triple[0].replace("<", "");
-                let prd = triple[1].replace("<", "");
-                let obj = triple[2].replace("<", "");
-
-                if (sub.startsWith("http"))
-                    sub = '<a href="' + sub + '" target="_blank">' + getSuffix(sub) + '</a>';
-                if (prd.startsWith("http"))
-                    prd = '<a href="' + prd + '" target="_blank">' + getSuffix(prd) + '</a>';
-                if (obj.startsWith("http"))
-                    obj = '<a href="' + obj + '" target="_blank">' + getSuffix(obj).replace("?", "") + '</a>';
-
-                let Row = $('<tr> <td align="center">' + factNo++ + '</td> <td >' + sub + '</td><td >' + prd +
-                            '</td><td>' + obj.split('^^')[0] + '</td>' +
-                            '<td align="center"><button id="valid'+(factNo - 2)+'" onclick="validate_Facts(' + (factNo - 2) + ')">Validate Fact</button></td></tr>');
-                table.append(Row);
-                flag = 1;
-            }
-        });
-
-        if(!flag) {
-            $('#fail_msg').css('display', 'block');
-            $('#facts_table').css('display', 'none');
-            $('#facts_opts').css('display', 'none');
-        }
-        else {
-            $('#fail_msg').css('display', 'none');
-            $('#facts_table').css('display', 'table');
-            $('#facts_opts').css('display', 'block');
-
-            let download_triples = $('<button id="download_triples" onclick="download_triples(' + respID + ')">Download Triples </button>');
-            $('#download_triples').remove();
-            $('#facts_opts').prepend(download_triples);
-
-            let lodchain_btn = $('<button id="lodchain_btn" onclick="connect_lodChain(' + respID + ')">Connect to LODchain</button>');
-            $('#lodchain_btn').remove();
-            $('#facts_opts').prepend(lodchain_btn);
-        }
         already_displayed_facts[last_displayed_fact] = false;   //na markarei me closed to teleutaio pou eixe anoiksei
         already_displayed_facts[respID] = true;                 //markarei me open auto pou anoikse twra
         last_displayed_fact = respID;                           //to krataei ws teleutaio
         $('#facts_cont').css('display', 'block');
+
+        already_displayed_ER[last_displayed_ER] = false; //markare to teleutaio enhanced get_facts (se periptwsi pou itan anoixto kapoio)
 
         //kleise to entities table (an upirxe kapoio anoixto)
         $('#entities_cont').css('display', 'none');
@@ -183,6 +195,57 @@ function create_fact_table(respID){
     }
 }
 
+//Creation of facts table for both regular and enhanced facts
+function generate_table(respID,ER){
+
+    $('#facts_table tr:not(:first-child)').remove(); //delete any previous rows
+    let table  = $('#facts_table');
+    let flag = 0;
+    let factNo = 1;
+    triples.forEach(tr => {
+        let triple = tr.split("> ");       //get single triple
+
+        if(triple.length >= 3){
+            let sub = triple[0].replace("<", "");
+            let prd = triple[1].replace("<", "");
+            let obj = triple[2].replace("<", "");
+
+            if (sub.startsWith("http"))
+                sub = '<a href="' + sub + '" target="_blank">' + getSuffix(sub) + '</a>';
+            if (prd.startsWith("http"))
+                prd = '<a href="' + prd + '" target="_blank">' + getSuffix(prd) + '</a>';
+            if (obj.startsWith("http"))
+                obj = '<a href="' + obj + '" target="_blank">' + getSuffix(obj).replace("?", "") + '</a>';
+
+            let Row = $('<tr> <td align="center">' + factNo++ + '</td> <td >' + sub + '</td><td >' + prd +
+                '</td><td>' + obj.split('^^')[0] + '</td>' +
+                '<td align="center"><button id="valid'+(factNo - 2)+'" onclick="validate_Facts(' + (factNo - 2) + ')">Validate Fact</button></td></tr>');
+            table.append(Row);
+            flag = 1;
+        }
+    });
+
+    if(!flag) {
+        $('#fail_msg').css('display', 'block');
+        $('#facts_table').css('display', 'none');
+        $('#facts_opts').css('display', 'none');
+    }
+    else {
+        $('#fail_msg').css('display', 'none');
+        $('#facts_table').css('display', 'table');
+        $('#facts_opts').css('display', 'block');
+
+        let download_triples = $('<button id="download_triples" onclick="download_triples(' + respID + ','+ ER +')">Download Triples </button>');
+        $('#download_triples').remove();
+        $('#facts_opts').prepend(download_triples);
+
+        let lodchain_btn = $('<button id="lodchain_btn" onclick="connect_lodChain(' + respID + ','+ ER +')">Connect to LODchain</button>');
+        $('#lodchain_btn').remove();
+        $('#facts_opts').prepend(lodchain_btn);
+    }
+}
+
+
 function getSuffix(str) {
     if (!str.startsWith("http"))
         return str;
@@ -191,8 +254,12 @@ function getSuffix(str) {
     return str3[str3.length - 1].replace("_", " ");
 }
 
-function download_triples(respID){
-    const triples = fact_map[respID];
+function download_triples(respID, ER){
+    let triples;
+    if(ER)
+        triples = fact_map_ER[respID];
+    else
+        triples = fact_map[respID];
     const dwnld = document.createElement("a");
     const file = new Blob([triples], {type: "text/plain"});
     dwnld.href = URL.createObjectURL(file);
@@ -313,7 +380,12 @@ function validate_Facts(index = -1){
 }
 
 //TO DO
-function connect_lodChain(respID){
-    const triples = fact_map[respID];   // se periptosi pou xreiazontai oi tripletes
-    console.log('connect to lodchain hit for Q' + (respID + 1))
+function connect_lodChain(respID,ER){
+    let triples; // se periptosi pou xreiazontai oi tripletes
+    //to ER einai boolean metavliti pou an einai true simainei oti i klisi proerxetai apo to get facts +ER, alliws prokeitai gia aplo get facts
+    if(ER)
+        triples = fact_map_ER[respID];
+    else
+        triples = fact_map[respID];
+    console.log('connect to lodchain hit for Q' + (respID + 1) + ' with ER: '+ ER);
 }
