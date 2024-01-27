@@ -51,7 +51,7 @@ function display_question(question){
     Qcontainer.click(function(){
         enable_operations(question, static_cnt);    //when user clicks on a previous question's container
         animate_container(Qcontainer);
-
+        hide_tables();
     });
 
     $('#chat_cont').append(Qcontainer);

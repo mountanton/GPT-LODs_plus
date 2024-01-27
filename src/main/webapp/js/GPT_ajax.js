@@ -62,6 +62,8 @@ function getGPTanswer(){
                     er_facts.prop('disabled',false);
                 else
                     er_facts.prop('disabled',true);
+
+                hide_tables();
             });
 
             $('#chat_cont').append(Qcontainer);
