@@ -2,6 +2,8 @@
 
 //Each response in the current session gets marked with an integer
 var response_cnt = 0;
+//Save in session the model that was used to fetch the answer, because (for future use, when another model is added) when we go back to previous answers there is no other way to know which model was used.
+const used_model = new Array(100).fill(false);
 
 function getGPTanswer(){
     let question = $('#Qtext').val();
@@ -37,6 +39,7 @@ function getGPTanswer(){
             Rcontainer.append(Rtext);
 
             const static_cnt = response_cnt; //so value doesn't get updated each time counter is increased
+            save_model(static_cnt);
             //Add on click event listener to response container for calling LODsyndesis API
             Rcontainer.click(function() {
                 openWindow();
@@ -46,6 +49,7 @@ function getGPTanswer(){
                 let facts_btn = $('#get_facts_btn');
                 let er_facts  = $('#get_fatcs_er_btn');
                 $('#q_id').html('Selected: R' +(static_cnt + 1))
+                $('#used_model').html('Model Used :<br> <span class="clear">' + used_model[static_cnt] +'</span>');
 
                 //remove previously applied functions
                 mark_bnt.off('click');
@@ -88,6 +92,16 @@ function getGPTanswer(){
     xhr.open('GET',url);
     xhr.setRequestHeader('Content-type','application/x-www-form-urlencoded');
     xhr.send();
+}
+
+//used to save in the session the AI model that was used to fetch each answer
+function save_model(respId){
+
+    if($('input[name="gpt-model"]:checked').val() == "turbo")
+        used_model[respId] = "GPT-3.5-turbo-0603";
+    else{
+        //if another model is added, implement here
+    }
 }
 
 //Used to bind user's chat choice (Continuous or Independent) to the session
