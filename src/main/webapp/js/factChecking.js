@@ -142,8 +142,8 @@ function create_fact_table_ER(respID){
 
         triples_unsplit = fact_map_ER[respID];
         triples = fact_map_ER[respID].split("\n")
-            .filter(line => line.trim() !== ""    //get rid of intermediate blank lines
-                && line.trim().startsWith("<"))  // and lines that dont contain triples
+                                     .filter(line => line.trim() !== ""    //get rid of intermediate blank lines
+                                        && line.trim().startsWith("<"))  // and lines that dont contain triples
 
         //all table creation related work happens here
         generate_table(respID, true);
@@ -260,6 +260,11 @@ function download_triples(respID, ER){
         triples = fact_map_ER[respID];
     else
         triples = fact_map[respID];
+
+    triples = triples.split("\n")
+           .filter(line => line.trim() !== ""    //get rid of intermediate blank lines
+                && line.trim().startsWith("<"));  // and lines that dont contain triples
+    triples = triples.join("\n");
     const dwnld = document.createElement("a");
     const file = new Blob([triples], {type: "text/plain"});
     dwnld.href = URL.createObjectURL(file);
@@ -379,13 +384,30 @@ function validate_Facts(index = -1){
     xhr.send(body);
 }
 
-//TO DO
 function connect_lodChain(respID,ER){
-    let triples; // se periptosi pou xreiazontai oi tripletes
-    //to ER einai boolean metavliti pou an einai true simainei oti i klisi proerxetai apo to get facts +ER, alliws prokeitai gia aplo get facts
+    let triples;
     if(ER)
         triples = fact_map_ER[respID];
     else
         triples = fact_map[respID];
-    console.log('connect to lodchain hit for Q' + (respID + 1) + ' with ER: '+ ER);
+
+    triples = triples.split("\n")
+                     .filter(line => line.trim() !== ""    //get rid of intermediate blank lines
+                        && line.trim().startsWith("<"));  // and lines that dont contain triples
+    triples = triples.join("\n");
+
+    let xhr = new XMLHttpRequest();
+    xhr.onload = function () {
+        if (xhr.readyState === 4 && xhr.status === 200) {
+            //Antikatastiste to URI paremeter an den einai to swsto.
+            let URL = "https://demos.isl.ics.forth.gr/LODChain/LODChain?URI=http://83.212.101.188:8081/GPT-1.0-SNAPSHOT/files/" + xhr.responseText;
+            window.open(URL, '_blank');
+        } else if (xhr.status !== 200) {
+            console.log("Error" + xhr.status + "Server could not handle the request. Please try again");
+        }
+    }
+
+    xhr.open("POST", 'ConnectToLodchain');
+    xhr.setRequestHeader("Accept", "application/json");
+    xhr.send(triples);
 }
