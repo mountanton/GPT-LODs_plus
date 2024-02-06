@@ -14,6 +14,7 @@ var triples_unsplit;
 var jsonFile;
 
 function get_facts(text, respID){
+    $('#fail_msg').css('display', 'none');
     if (fact_map[respID] !== undefined)    //if already called the API for this specific response
         create_fact_table(respID);
     else {
@@ -31,6 +32,7 @@ function get_facts(text, respID){
 }
 
 function get_er_facts(text, respID){
+    $('#fail_msg').css('display', 'none');
     if (fact_map_ER[respID] !== undefined)    //if already called the API for this specific response
         create_fact_table_ER(respID);
     else {
@@ -145,12 +147,13 @@ function create_fact_table_ER(respID){
                                      .filter(line => line.trim() !== ""    //get rid of intermediate blank lines
                                         && line.trim().startsWith("<"))  // and lines that dont contain triples
 
-        //all table creation related work happens here
-        generate_table(respID, true);
-
+        //markaroume prin to generation gia tin periptwsi pou den paragontai tripletes kai theloume ola ta displayed na einai false
         already_displayed_ER[last_displayed_ER] = false;   //na markarei me closed to teleutaio pou eixe anoiksei
         already_displayed_ER[respID] = true;                 //markarei me open auto pou anoikse twra
         last_displayed_ER = respID;                           //to krataei ws teleutaio
+
+        //all table creation related work happens here
+        generate_table(respID, true);
         $('#facts_cont').css('display', 'block');
 
         already_displayed_facts[last_displayed_fact] = false; //markare to teleutaio regular get_facts (se periptwsi pou itan anoixto kapoio)
@@ -174,12 +177,13 @@ function create_fact_table(respID){
                                   .filter(line => line.trim() !== ""    //get rid of intermediate blank lines
                                       && line.trim().startsWith("<"))  // and lines that dont contain triples
 
-        //all table creation related work happens here
-        generate_table(respID, false);
-
+        //markaroume prin to generation gia tin periptwsi pou den paragontai tripletes kai theloume ola ta displayed na einai false
         already_displayed_facts[last_displayed_fact] = false;   //na markarei me closed to teleutaio pou eixe anoiksei
         already_displayed_facts[respID] = true;                 //markarei me open auto pou anoikse twra
         last_displayed_fact = respID;                           //to krataei ws teleutaio
+
+        //all table creation related work happens here
+        generate_table(respID, false);
         $('#facts_cont').css('display', 'block');
 
         already_displayed_ER[last_displayed_ER] = false; //markare to teleutaio enhanced get_facts (se periptwsi pou itan anoixto kapoio)
@@ -229,6 +233,16 @@ function generate_table(respID,ER){
         $('#fail_msg').css('display', 'block');
         $('#facts_table').css('display', 'none');
         $('#facts_opts').css('display', 'none');
+
+        //remove the contents of this response from the session, so that user can try again to generate triples
+        if(ER) {
+            delete fact_map_ER[respID];
+            already_displayed_ER[last_displayed_ER] = false;
+        }
+        else {
+            delete fact_map[respID];
+            already_displayed_facts[last_displayed_fact] = false;
+        }
     }
     else {
         $('#fail_msg').css('display', 'none');
