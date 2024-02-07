@@ -130,7 +130,7 @@ function get_ent_info(text, respID){
             if (item.isEntity) {
             /**Entity column*/
                 let Row = $('<tr><td align="center"> <img src="'  + item.img + '" width="75" height="75" title="' + item.textpart + '">' + //img
-                    '<br> <a href="'  + item.lodsyndesisURL + '" target="_blank">' + item.textpart + '</a>  ' + //name-link
+                    '<br> <a href="'  + item.dbpediaURI + '" target="_blank">' + item.textpart + '</a>  ' + //name-link
                     '<p style="margin-top: 0;">(' + item.type + ')</p></td>'                                                          //type
                 );
 
