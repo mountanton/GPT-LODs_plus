@@ -1,3 +1,6 @@
+# REST API GitHub Page
+https://github.com/mountanton/GPT-LODs-Spring_API
+
 # How to run
 
 To employ this project on your local machine, you need to import it as a Maven project and deploy it on a local server (such as Tomcat) in WAR exploded format .
